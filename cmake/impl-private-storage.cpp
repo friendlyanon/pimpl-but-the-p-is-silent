@@ -1,31 +1,22 @@
 #include <impl-private.hpp>
 
-static char info[] = {'I',
-                      'N',
-                      'F',
-                      'O',
-                      ':',
-                      's',
-                      't',
-                      'o',
-                      'r',
-                      'a',
-                      'g',
-                      'e',
-                      '[',
-                      '0' + ((sizeof(impl::impl_private) / 10000) % 10),
-                      '0' + ((sizeof(impl::impl_private) / 1000) % 10),
-                      '0' + ((sizeof(impl::impl_private) / 100) % 10),
-                      '0' + ((sizeof(impl::impl_private) / 10) % 10),
-                      '0' + (sizeof(impl::impl_private) % 10),
-                      ':',
-                      '0' + ((alignof(impl::impl_private) / 10000) % 10),
-                      '0' + ((alignof(impl::impl_private) / 1000) % 10),
-                      '0' + ((alignof(impl::impl_private) / 100) % 10),
-                      '0' + ((alignof(impl::impl_private) / 10) % 10),
-                      '0' + (alignof(impl::impl_private) % 10),
-                      ']',
-                      '\0'};
+// clang-format off
+static char info[] = {
+  'I','N','F','O',':','s','t','o','r','a','g','e','[',
+  '0' + ((sizeof(impl::impl_private) / 10000) % 10),
+  '0' + ((sizeof(impl::impl_private) / 1000) % 10),
+  '0' + ((sizeof(impl::impl_private) / 100) % 10),
+  '0' + ((sizeof(impl::impl_private) / 10) % 10),
+  '0' +  (sizeof(impl::impl_private) % 10),
+  ':',
+  '0' + ((alignof(impl::impl_private) / 10000) % 10),
+  '0' + ((alignof(impl::impl_private) / 1000) % 10),
+  '0' + ((alignof(impl::impl_private) / 100) % 10),
+  '0' + ((alignof(impl::impl_private) / 10) % 10),
+  '0' +  (alignof(impl::impl_private) % 10),
+  ']','\0'
+};
+// clang-format on
 
 int main(int argc, char* argv[])
 {
