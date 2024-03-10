@@ -2,11 +2,15 @@ cmake_minimum_required(VERSION 3.14)
 
 project(pimpl-but-the-p-is-silent CXX)
 
-include(GenerateExportHeader)
-
 add_library(impl-private-storage STATIC cmake/impl-private-storage.cpp)
 
-set(storage_h "${PROJECT_BINARY_DIR}/include/impl-private-storage.hpp")
+set(storage_root "${PROJECT_BINARY_DIR}")
+get_cmake_property(is_multi_config GENERATOR_IS_MULTI_CONFIG)
+if(is_multi_config)
+  string(APPEND storage_root "/\$<CONFIG>")
+endif()
+
+set(storage_h "${storage_root}/include/impl-private-storage.hpp")
 add_custom_command(
     OUTPUT "${storage_h}"
     COMMAND "${CMAKE_COMMAND}"
@@ -20,11 +24,13 @@ add_custom_command(
     VERBATIM
 )
 
+include(GenerateExportHeader)
 add_library(impl SHARED source/impl.cpp source/impl-private.cpp "${storage_h}")
-generate_export_header(impl EXPORT_FILE_NAME include/impl-export.hpp)
+generate_export_header(impl EXPORT_FILE_NAME export/impl-export.hpp)
 target_include_directories(
     impl PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>"
+    "\$<BUILD_INTERFACE:${storage_root}/include>"
+    "\$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/export>"
     "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
 )
 set_target_properties(
@@ -48,7 +54,8 @@ install(TARGETS impl)
 install(
     DIRECTORY
     include/
-    "${PROJECT_BINARY_DIR}/include/"
+    "${storage_root}/include/"
+    "${PROJECT_BINARY_DIR}/export/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
