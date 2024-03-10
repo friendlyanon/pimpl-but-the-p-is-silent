@@ -14,7 +14,7 @@ if(NOT found)
   message(FATAL_ERROR "Couldn't find storage info in ${lib}")
 endif()
 
-file(WRITE "${out}" "\
+file(WRITE "${out}_" "\
 #pragma once
 
 #include <cstddef>
@@ -27,3 +27,5 @@ constexpr size_t private_align = ${CMAKE_MATCH_2};
 
 }  // impl
 ")
+configure_file("${out}_" "${out}" COPYONLY)
+file(REMOVE "${out}_")
